@@ -50,6 +50,7 @@ class Controller:
         for retailer in retailers:
             self._view.dd_retailer.options.append(ft.dropdown.Option(
                 key= retailer.Retailer_code,
+                text = retailer.Retailer_name,
                 data=retailer,
                 on_click= self._choiceDDretailer
             ))
