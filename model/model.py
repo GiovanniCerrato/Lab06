@@ -14,3 +14,8 @@ class Model:
 
     def getAllRetailers(self):
         return DAO.getAllRetailers()
+
+    def getAllVendite(self):
+        res = DAO.getAllVendite()
+        res.sort(key=lambda x: x.Date, reverse=True)
+        return res

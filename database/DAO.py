@@ -1,5 +1,6 @@
 from database.DB_connect import DBConnect
 from model.retailer import Retailer
+from model.vendita import Vendita
 
 
 class DAO():
@@ -57,6 +58,24 @@ class DAO():
         res = []
         for row in cursor:
             res.append(Retailer(**row))
+
+        cursor.close()
+        cnx.close()
+        return res
+
+    @staticmethod
+    def getAllVendite():
+        cnx = DBConnect.get_connection()
+        cursor = cnx.cursor(dictionary=True)
+
+        query = """select *
+                    from go_daily_sales"""
+
+        cursor.execute(query)
+
+        res = []
+        for row in cursor:
+            res.append(Vendita(**row))
 
         cursor.close()
         cnx.close()

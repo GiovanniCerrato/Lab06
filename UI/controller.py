@@ -11,7 +11,12 @@ class Controller:
         self._brandSelezionato = None
         self._retailerSelezionato = None
 
-    def handle_topVendite(self):
+    def handle_topVendite(self,e):
+        vendite = self._model.getAllVendite()
+        print(len(vendite))
+        for vendita in vendite:
+            self._view.txt_result.controls.append(ft.Text(vendita))
+        self._view.update_page()
         pass
 
     def handle_analizzaVendite(self):
