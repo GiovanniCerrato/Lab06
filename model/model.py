@@ -17,5 +17,11 @@ class Model:
 
     def getAllVendite(self):
         res = DAO.getAllVendite()
-        res.sort(key=lambda x: x.Date, reverse=True)
+        res.sort(key=lambda x: x.Unit_sale_price * x.Quantity, reverse=True)
         return res
+
+    def getBrandFromPN(self,PN):
+        return DAO.getBrandFromPN(PN)
+
+    def getAllProduct(self):
+        return DAO.getAllProducts()

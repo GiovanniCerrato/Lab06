@@ -1,4 +1,5 @@
 from database.DB_connect import DBConnect
+from model.prodotto import Prodotto
 from model.retailer import Retailer
 from model.vendita import Vendita
 
@@ -76,6 +77,41 @@ class DAO():
         res = []
         for row in cursor:
             res.append(Vendita(**row))
+
+        cursor.close()
+        cnx.close()
+        return res
+
+    @staticmethod
+    def getBrandFromPN(PN):
+        cnx = DBConnect.get_connection()
+        cursor = cnx.cursor()
+
+        query = """select Product_brand
+                    from go_products
+                    where Product_number = %s"""
+
+        cursor.execute(query, (PN))
+
+        res = cursor[0]
+
+        cursor.close()
+        cnx.close()
+        return res
+
+    @staticmethod
+    def getAllProducts():
+        cnx = DBConnect.get_connection()
+        cursor = cnx.cursor(dictionary=True)
+
+        query = """select *
+                    from go_products"""
+
+        cursor.execute(query)
+
+        res = []
+        for row in cursor:
+            res.append(Prodotto(**row))
 
         cursor.close()
         cnx.close()

@@ -1,3 +1,5 @@
+import copy
+
 import flet as ft
 
 
@@ -11,15 +13,41 @@ class Controller:
         self._brandSelezionato = None
         self._retailerSelezionato = None
 
-    def handle_topVendite(self,e):
-        vendite = self._model.getAllVendite()
-        print(len(vendite))
-        for vendita in vendite:
-            self._view.txt_result.controls.append(ft.Text(vendita))
-        self._view.update_page()
-        pass
+        self._vendite = None
+        self._prodotti = None
 
-    def handle_analizzaVendite(self):
+
+    def handle_topVendite(self,e):
+        self._view.txt_result.clean()
+        if not self._vendite:
+            self._vendite = self._model.getAllVendite()
+        res = self._vendite[:]
+
+        if self._annoSelezionato:
+            res = [e for e in res if e.Date.year == self._annoSelezionato]
+
+        if self._brandSelezionato:
+            if not self._prodotti:
+                self._prodotti = self._model.getAllProduct()
+            product_numbers = []
+            for p in self._prodotti:
+                if p.Product_brand == self._brandSelezionato:
+                    product_numbers.append(p.Product_number)
+                    print(p.Product_brand)
+            res = [vendita for vendita in res if vendita.Product_number in product_numbers]
+
+        if self._retailerSelezionato:
+            res = [vendita for vendita in res if vendita.Retailer_code == self._retailerSelezionato.Retailer_code]
+
+        topFive = res[0:5]
+        if not res:
+            topFive = self._vendite[0:5]
+        for vendita in topFive:
+            self._view.txt_result.controls.append(ft.Text(f"{vendita}"))
+            self._view.update_page()
+
+
+    def handle_analizzaVendite(self,e):
         pass
 
     def filldd_anno(self):
@@ -55,7 +83,7 @@ class Controller:
         for retailer in retailers:
             self._view.dd_retailer.options.append(ft.dropdown.Option(
                 key= retailer.Retailer_code,
-                text = retailer.Retailer_name,
+                text = f"{retailer.Retailer_name} ({retailer.Retailer_code})",
                 data=retailer,
                 on_click= self._choiceDDretailer
             ))

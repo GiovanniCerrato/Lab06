@@ -25,7 +25,7 @@ class View(ft.UserControl):
 
         #ROW with some controls
         self.dd_anno = ft.Dropdown(
-            label="anno",
+            label="Anno",
             options=[
                 ft.dropdown.Option(key="Nessun filtro", data = None, on_click= self._controller._choiceDDanno)
             ]
@@ -34,7 +34,7 @@ class View(ft.UserControl):
         self._page.update()
 
         self.dd_brand = ft.Dropdown(
-            label="brand",
+            label="Brand",
             options=[
                 ft.dropdown.Option(key="Nessun filtro", data = None, on_click= self._controller._choiceDDbrand)
             ]
@@ -42,7 +42,7 @@ class View(ft.UserControl):
         self._controller.filldd_brand()
         self._page.update()
         self.dd_retailer = ft.Dropdown(
-            label="retailer",
+            label="Retailer",
             expand = True,
             options=[
                 ft.dropdown.Option(key="Nessun filtro", data = None, on_click= self._controller._choiceDDretailer)

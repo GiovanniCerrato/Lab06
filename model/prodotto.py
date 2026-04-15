@@ -10,7 +10,7 @@ class Prodotto:
     Product_brand: str
     Product_color: str
     Unit_cost: float
-    Price_cost: float
+    Unit_price: float
 
     def __eq__(self, other):
         return self.Product_number == other.Product_number
