@@ -10,10 +10,15 @@ class Model:
         return res
 
     def getAllBrands(self):
-        return DAO.getAllBrands()
+        res = DAO.getAllBrands()
+        res.sort()
+        return res
 
     def getAllRetailers(self):
-        return DAO.getAllRetailers()
+        res = DAO.getAllRetailers()
+        res.sort(key=lambda x: x.Retailer_name)
+        return res
+
 
     def getAllVendite(self):
         res = DAO.getAllVendite()

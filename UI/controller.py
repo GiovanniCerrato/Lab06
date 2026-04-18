@@ -39,16 +39,58 @@ class Controller:
         if self._retailerSelezionato:
             res = [vendita for vendita in res if vendita.Retailer_code == self._retailerSelezionato.Retailer_code]
 
-        topFive = res[0:5]
-        if not res:
-            topFive = self._vendite[0:5]
+        if len(res) < 5:
+            topFive = [vendita for vendita in res]
+        else:
+            topFive = [res[i] for i in range(0,5)]
+        if not topFive:
+            self._view.create_alert("Nessun risultato trovato")
+
+
         for vendita in topFive:
             self._view.txt_result.controls.append(ft.Text(f"{vendita}"))
             self._view.update_page()
 
 
     def handle_analizzaVendite(self,e):
-        pass
+        self._view.txt_result.clean()
+        if not self._vendite:
+            self._vendite = self._model.getAllVendite()
+        res = self._vendite[:]
+
+        if self._annoSelezionato:
+            res = [e for e in res if e.Date.year == self._annoSelezionato]
+
+        if self._brandSelezionato:
+            if not self._prodotti:
+                self._prodotti = self._model.getAllProduct()
+            product_numbers = []
+            for p in self._prodotti:
+                if p.Product_brand == self._brandSelezionato:
+                    product_numbers.append(p.Product_number)
+            res = [vendita for vendita in res if vendita.Product_number in product_numbers]
+
+        if self._retailerSelezionato:
+            res = [vendita for vendita in res if vendita.Retailer_code == self._retailerSelezionato.Retailer_code]
+
+        if not res:
+            self._view.create_alert("Nessun risultato trovato")
+            return
+        giro_affari = 0
+        numero_vendite = 0
+        lista_retailer = []
+        lista_prodotti = []
+        for vendita in res:
+            numero_vendite += 1
+            if vendita.Retailer_code not in lista_retailer:
+                lista_retailer.append(vendita.Retailer_code)
+            if vendita.Product_number not in lista_prodotti:
+                lista_prodotti.append(vendita.Product_number)
+            giro_affari += vendita.Unit_sale_price * vendita.Quantity
+
+        self._view.txt_result.controls.append(ft.Text(f"Statistiche vendite:\nGiro d'affari: {giro_affari}\nNumero vendite: {numero_vendite}\nNumero Retailer coinvolti: {len(lista_retailer)}\nNumero prodotti coinvolti: {len(lista_prodotti)}"))
+        self._view.update_page()
+
 
     def filldd_anno(self):
         anni = self._model.getAnniVendite()
