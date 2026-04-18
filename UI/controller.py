@@ -45,7 +45,7 @@ class Controller:
             topFive = [res[i] for i in range(0,5)]
         if not topFive:
             self._view.create_alert("Nessun risultato trovato")
-
+            return
 
         for vendita in topFive:
             self._view.txt_result.controls.append(ft.Text(f"{vendita}"))
@@ -104,7 +104,6 @@ class Controller:
 
     def _choiceDDanno(self,e):
         self._annoSelezionato = e.control.data
-        print(self._annoSelezionato)
 
     def filldd_brand(self):
         brands = self._model.getAllBrands()
@@ -118,7 +117,6 @@ class Controller:
 
     def _choiceDDbrand(self,e):
         self._brandSelezionato = e.control.data
-        print(self._brandSelezionato)
 
     def filldd_retailer(self):
         retailers = self._model.getAllRetailers()
